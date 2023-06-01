@@ -10,6 +10,7 @@ function App() {
         questionEnvironmentEndpoint="/environment_questions" 
         questionMitigationEndpoint="/mitigation_questions"
       />
+      <a href="www.google.com">Passe à un autre quiz pour découvrir comment tu peux aider à protéger l'environnement</a>
     </div>
   );
 }

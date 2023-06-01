@@ -11,16 +11,30 @@ interface Props {
 interface QuestionType {
   id: number;
   question: string;
-  answers: { id: number, answer: string }[];
+  answers: { id: number, answer: string, isCorrect: boolean }[];
 }
 
 function Questionnaire({ questionEnvironmentEndpoint }: Props) {
   const [questions, setQuestions] = useState<QuestionType[]>([]);
+  const [showMessage, setShowMessage] = useState(false);
+  const [score, setScore] = useState(0);
+
+  function handleSubmit() {
+    setShowMessage(true);
+    }
+
+  function incrementScore() {
+    setScore(prevScore => prevScore + 1)
+  }
 
   useEffect(() => {
     fetch(questionEnvironmentEndpoint)
       .then((response) => response.json())
-      .then((data) => setQuestions(data));
+      .then((data) => {
+        const shuffledData = data.sort(() => Math.random() - 0.5);
+        setQuestions(shuffledData);
+      });
+  
   }, [questionEnvironmentEndpoint]);
 
 
@@ -30,15 +44,20 @@ function Questionnaire({ questionEnvironmentEndpoint }: Props) {
         <Question 
           key={index}
           question={question.question}  
-          answers={question.answers.map(a => a.answer)}  
+          answers={question.answers}  
+          incrementScore={incrementScore}
         />
       )) : 'Loading...'}
       <button 
       type="submit" 
       className="submit-button"
+      onClick= {handleSubmit}
       style={{ marginTop: "auto", padding: "10px 20px", alignSelf: "center", backgroundColor: "#4B0082", color:"white", fontWeight:"bold", borderRadius:"5px"}}>
         Valider
       </button>
+      {showMessage && (
+        <p>Tu as obtenu {score} points.</p>
+      )}
     </div>
 );
 
