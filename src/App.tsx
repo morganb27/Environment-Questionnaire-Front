@@ -1,5 +1,8 @@
 import Questionnaire from './components/Questionnaire'; 
 import "./App.css";
+import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
+
+
 
 
 function App() {
@@ -7,12 +10,19 @@ function App() {
     <div className="container">
       <h1>Teste tes connaissances</h1>
       <Questionnaire 
-        questionEnvironmentEndpoint="/environment_questions" 
-        questionMitigationEndpoint="/mitigation_questions"
+        questionEndpoint="/environment_questions" 
       />
-      <a href="www.google.com">Passe à un autre quiz pour découvrir comment tu peux aider à protéger l'environnement</a>
+      <Link to="/second-quiz">Passe à un autre quiz pour découvrir comment tu peux aider à protéger l'environnement</Link>
+      <Routes>
+      <Route
+          path="/second-quiz"
+          element={<Questionnaire questionEndpoint="/mitigation_questions" />}
+        />
+      </Routes>
     </div>
+    
   );
+  
 }
 
 export default App;

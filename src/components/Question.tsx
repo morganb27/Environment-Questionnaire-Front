@@ -1,60 +1,40 @@
 //This component is responsible for displaying the questions and answers
 
 import '../styles/Question.css';
+import { ChangeEvent } from 'react';
 
-interface Answer {
-    id: number;
-    answer: string;
-    isCorrect: boolean;
-  }
-
-
-interface QuestionProps {
-    question: string;
-    answers: Answer[];
-    incrementScore: () => void;
+interface AnswerType {
+  id: number;
+  answer: string;
 }
 
-const Question: React.FC<QuestionProps> = ({ question, answers, incrementScore }) => {
+interface QuestionType {
+  id: number;
+  question: string;
+  answers: AnswerType[];
+}
 
-    function handleAnswerChange(e: React.ChangeEvent<HTMLInputElement>) {
+interface QuestionProps {
+    question: QuestionType;
+    handleAnswer: (e: ChangeEvent<HTMLInputElement>) => void;
+}
 
-        const selectedAnswer = e.target.value;
-        
-        console.log('answers:', answers);
-        const correctAnswer = answers.find((a) => a.isCorrect == true)
-        console.log('correct answer:', correctAnswer);
-        console.log('selected answer:', selectedAnswer);
-        console.log('condition result:', correctAnswer && correctAnswer.answer === selectedAnswer);
-        
-        if (correctAnswer) {
-            console.log('correct answer type:', typeof correctAnswer.answer);
-            console.log('selected answer type:', typeof selectedAnswer);
-        }
-
-        if (correctAnswer && correctAnswer.answer === selectedAnswer) {
-            incrementScore();
-        }
-    }
-      
-
+const Question: React.FC<QuestionProps> = ({ question, handleAnswer }) => {   
     return (
-        <div>
-            <div className="question-container">
-            <h3 className="question-text">{question}</h3>
-            {answers.map((answer, index) => (
-                <div className="answer" key={index}>
+        <div className="question-container">
+            <h3 className="question-text">{question.question}</h3>
+            {question.answers.map((answer, index) => (
+                <div className="answer" key={answer.id}>
                     <input 
                         type="radio" 
-                        id={`answer-${index}`}
-                        name={question}
-                        value={answer.answer}
-                        onChange={handleAnswerChange}
+                        id={`answer-${question.id}-${index}`}
+                        name={question.id.toString()}
+                        value={answer.id}
+                        onChange={handleAnswer}
                     />
-                    <label htmlFor={`answer-${index}`}>{answer.answer}</label>
+                    <label htmlFor={`answer-${question.id}-${index}`}>{answer.answer}</label>
                 </div>
             ))}
-            </div>
         </div>
     )
 }
