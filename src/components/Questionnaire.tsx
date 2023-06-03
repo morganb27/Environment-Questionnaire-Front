@@ -3,6 +3,7 @@ import Question from "./Question";
 
 interface Props {
   questionEndpoint: string;
+  answerEndpoint: string;
 }
 
 interface QuestionType {
@@ -11,7 +12,7 @@ interface QuestionType {
   answers: { id: number, answer: string, }[];
 }
 
-function Questionnaire({ questionEndpoint }: Props) {
+function Questionnaire({ questionEndpoint, answerEndpoint }: Props) {
   const [questions, setQuestions] = useState<QuestionType[]>([]);
   const [showMessage, setShowMessage] = useState(false);
   const [score, setScore] = useState(0);
@@ -19,7 +20,7 @@ function Questionnaire({ questionEndpoint }: Props) {
   
   async function handleSubmit() {
     try {
-      const response = await fetch('/submit_answers', {
+      const response = await fetch( answerEndpoint, {
           method: 'POST',
           headers: {
               'Content-Type': 'application/json',
@@ -54,6 +55,12 @@ function Questionnaire({ questionEndpoint }: Props) {
         console.error("Error fetching questions:", error);
       }
     })();
+    return () => {
+      setQuestions([]);
+      setShowMessage(false);
+      setScore(0);
+      setQuestionnaireAnswers([]);
+    };
   }, [questionEndpoint]);
 
   return (
@@ -73,8 +80,11 @@ function Questionnaire({ questionEndpoint }: Props) {
       >
         Valider
       </button>
+      {showMessage === false && (
+        <p style={{margin: "0 auto", padding: "20px"}}> </p>
+      )}
       {showMessage && (
-        <p>Tu as obtenu {score} points.</p>
+        <p style={{margin: "0 auto", padding: "20px" }}>Tu as obtenu {score} points.</p>
       )}
     </div>
   );

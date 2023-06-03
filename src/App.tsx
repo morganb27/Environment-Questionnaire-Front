@@ -9,20 +9,28 @@ function App() {
   return (
     <div className="container">
       <h1>Teste tes connaissances</h1>
-      <Questionnaire 
-        questionEndpoint="/environment_questions" 
-      />
-      <Link to="/second-quiz">Passe à un autre quiz pour découvrir comment tu peux aider à protéger l'environnement</Link>
       <Routes>
-      <Route
+        <Route
+          path="/"
+          element={
+            <>
+              <Questionnaire 
+                questionEndpoint="/environment_questions" 
+                answerEndpoint="/submit_environment_answers"
+              />
+              <Link className="link" to="/second-quiz">Passe à un autre quiz pour découvrir comment tu peux aider à protéger l'environnement</Link>
+            </>
+          }
+        />
+        <Route
           path="/second-quiz"
-          element={<Questionnaire questionEndpoint="/mitigation_questions" />}
+          element={<Questionnaire questionEndpoint="/mitigation_questions" answerEndpoint="/submit_mitigation_answers"/>}
         />
       </Routes>
     </div>
-    
   );
-  
 }
+
+
 
 export default App;
