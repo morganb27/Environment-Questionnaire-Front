@@ -84,7 +84,7 @@ function Questionnaire({ questionEndpoint, answerEndpoint }: Props) {
         <p style={{margin: "0 auto", padding: "20px"}}> </p>
       )}
       {showMessage && (
-        <p style={{margin: "0 auto", padding: "20px" }}>Tu as obtenu {score} points.</p>
+        <p style={{margin: "0 auto", padding: "20px" }}>Tu as obtenu {score} point(s).</p>
       )}
     </div>
   );
